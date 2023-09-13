@@ -10,7 +10,7 @@
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
     "start:containers": "docker-compose up --build",
-    "start:watch": " nest start --watch",
+    "start:watch": "prisma migrate dev && nest start --watch",
     "start:dev": "yarn start:containers",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",

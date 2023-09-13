@@ -12,7 +12,7 @@ datasource db {
 
 model Menu {
   id   Int    @id @default(autoincrement())
-  name String
+  name String  @unique
 }
 
 model Product {
@@ -27,6 +27,6 @@ model Product {
 
 model Category {
   id      Int       @id @default(autoincrement())
-  name    String
+  name    String  @unique
   Product Product[]
 }

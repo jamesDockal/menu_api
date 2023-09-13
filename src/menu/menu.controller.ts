@@ -19,4 +19,9 @@ export class MenuController {
   create(@Body() createMenuDto: CreateMenuDto) {
     return this.menuService.create(createMenuDto);
   }
+
+  @Get()
+  getAll() {
+    return this.menuService.getAll();
+  }
 }

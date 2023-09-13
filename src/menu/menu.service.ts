@@ -21,4 +21,8 @@ export class MenuService {
       data: createMenuDto,
     });
   }
+
+  async getAll() {
+    return await this.prisma.menu.findMany({});
+  }
 }

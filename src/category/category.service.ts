@@ -26,4 +26,8 @@ export class CategoryService {
       data: createCategoryDto,
     });
   }
+
+  async getAll() {
+    return await this.prisma.category.findMany({});
+  }
 }

@@ -41,7 +41,11 @@ export class MenuService {
   }
 
   async getAll() {
-    return await this.prisma.menu.findMany({});
+    return await this.prisma.menu.findMany({
+      include: {
+        products: true,
+      },
+    });
   }
 
   async update(id: string, updateMenuDto: UpdateMenuDto) {
@@ -67,6 +71,20 @@ export class MenuService {
     return await this.prisma.menu.delete({
       where: {
         id: parseInt(id),
+      },
+    });
+  }
+
+  async currentMenu() {
+    const currentTime = new Date().getHours() - 3;
+    const isDayTime = currentTime >= 6 && currentTime < 18;
+
+    return await this.prisma.menu.findFirst({
+      include: {
+        products: true,
+      },
+      where: {
+        name: isDayTime ? 'Diurno' : 'Noturno',
       },
     });
   }

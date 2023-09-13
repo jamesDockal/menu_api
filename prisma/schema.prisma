@@ -13,13 +13,13 @@ datasource db {
 model Menu {
   id   Int    @id @default(autoincrement())
   name String  @unique
-  Product Product[]
+  products Product[]
 
 }
 
 model Product {
   id          Int      @id @default(autoincrement())
-  price       Int
+  price       Float
   name        String
   image       String
   description String
@@ -30,5 +30,5 @@ model Product {
 model Category {
   id      Int       @id @default(autoincrement())
   name    String  @unique
-  Product Product[]
+  products Product[]
 }

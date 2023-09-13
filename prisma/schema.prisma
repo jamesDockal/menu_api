@@ -13,6 +13,8 @@ datasource db {
 model Menu {
   id   Int    @id @default(autoincrement())
   name String  @unique
+  Product Product[]
+
 }
 
 model Product {
@@ -22,6 +24,7 @@ model Product {
   image       String
   description String
   categories Category[]
+  menus Menu[]
 }
 
 model Category {

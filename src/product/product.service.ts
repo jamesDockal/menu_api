@@ -26,6 +26,12 @@ export class ProductService {
     });
   }
 
+  private async getMenu(dto: Partial<Category>) {
+    return await this.prisma.menu.findFirst({
+      where: dto,
+    });
+  }
+
   async create(createProductDto: CreateProductDto) {
     const alredyRegsitered = await this.getProduct({
       name: createProductDto.name,
@@ -36,7 +42,7 @@ export class ProductService {
       );
     }
 
-    const toConnectIds = (
+    const categoryIds = (
       await Promise.all(
         createProductDto.categories.map(async (category, index) => {
           if (typeof category === 'number') {
@@ -56,17 +62,50 @@ export class ProductService {
       )
     ).filter((item) => item);
 
+    const menuIds = (
+      await Promise.all(
+        createProductDto.menus.map(async (menu, index) => {
+          if (typeof menu === 'number') {
+            const isRegistered = await this.getMenu({ id: menu });
+            if (!isRegistered) {
+              throw new NotFoundException(`Menu '${menu}' was not found!`);
+            }
+            return menu;
+          } else {
+            throw new BadRequestException(
+              `Menu at ${index} has invalid format!`,
+            );
+          }
+        }),
+      )
+    ).filter((item) => item);
+
     return await this.prisma.product.create({
       data: {
         ...createProductDto,
         categories: {
-          connect: toConnectIds.map((id) => ({
+          connect: categoryIds.map((id) => ({
+            id,
+          })),
+        },
+        menus: {
+          connect: menuIds.map((id) => ({
             id,
           })),
         },
       },
       include: {
         categories: true,
+        menus: true,
+      },
+    });
+  }
+
+  async getAll() {
+    return await this.prisma.product.findMany({
+      include: {
+        categories: true,
+        menus: true,
       },
     });
   }

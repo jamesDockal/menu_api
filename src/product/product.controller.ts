@@ -19,4 +19,9 @@ export class ProductController {
   create(@Body() createProductDto: CreateProductDto) {
     return this.productService.create(createProductDto);
   }
+
+  @Get()
+  getAll() {
+    return this.productService.getAll();
+  }
 }

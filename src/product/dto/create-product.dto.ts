@@ -1,19 +1,5 @@
 import { Transform, Type } from 'class-transformer';
-import {
-  IsArray,
-  IsNotEmpty,
-  IsNumber,
-  IsObject,
-  IsString,
-  ValidateNested,
-  isArray,
-  isNumber,
-} from 'class-validator';
-import { Category } from 'src/category/entities/category.entity';
-
-class Teste {
-  asd: (Category | number)[];
-}
+import { IsArray, IsNotEmpty, IsNumber, IsString } from 'class-validator';
 
 export class CreateProductDto {
   @IsNotEmpty()
@@ -35,4 +21,8 @@ export class CreateProductDto {
   @IsNotEmpty()
   @IsArray()
   categories: number[];
+
+  @IsNotEmpty()
+  @IsArray()
+  menus: number[];
 }

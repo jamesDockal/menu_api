@@ -35,4 +35,9 @@ export class ProductController {
   delete(@Param('id') id: string) {
     return this.productService.delete(id);
   }
+
+  @Get('/:id')
+  findOne(@Param('id') id: string) {
+    return this.productService.findOne(parseInt(id));
+  }
 }

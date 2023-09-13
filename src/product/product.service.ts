@@ -192,4 +192,15 @@ export class ProductService {
       },
     });
   }
+
+  async findOne(id: number) {
+    const product = await this.prisma.product.findFirst({
+      where: { id },
+    });
+    if (!product) {
+      throw new NotFoundException(`Product '${id}' was not found!`);
+    }
+
+    return product;
+  }
 }

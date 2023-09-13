@@ -179,4 +179,17 @@ export class ProductService {
       },
     });
   }
+
+  async delete(id: string) {
+    const isRegistered = await this.getProduct({ id: parseInt(id) });
+    if (!isRegistered) {
+      throw new NotFoundException(`Product '${id}' was not found!`);
+    }
+
+    return await this.prisma.product.delete({
+      where: {
+        id: parseInt(id),
+      },
+    });
+  }
 }

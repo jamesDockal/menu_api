@@ -34,16 +34,28 @@ export class MenuService {
   }
 
   async update(id: string, updateMenuDto: UpdateMenuDto) {
-    const isRegistered = this.getMenu({ id: parseInt(id) });
-    if (isRegistered) {
+    const isRegistered = await this.getMenu({ id: parseInt(id) });
+    if (!isRegistered) {
       throw new NotFoundException(`Menu ${id} was not found!`);
     }
-
     return await this.prisma.menu.update({
       where: {
         id: parseInt(id),
       },
       data: updateMenuDto,
+    });
+  }
+
+  async delete(id: string) {
+    const isRegistered = await this.getMenu({ id: parseInt(id) });
+    if (!isRegistered) {
+      throw new NotFoundException(`Menu ${id} was not found!`);
+    }
+
+    return await this.prisma.menu.delete({
+      where: {
+        id: parseInt(id),
+      },
     });
   }
 }

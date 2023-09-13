@@ -47,4 +47,17 @@ export class CategoryService {
       data: updateCategoryuDto,
     });
   }
+
+  async delete(id: string) {
+    const isRegistered = await this.getCategory({ id: parseInt(id) });
+    if (!isRegistered) {
+      throw new NotFoundException(`Category '${id}' was not found!`);
+    }
+
+    return await this.prisma.category.delete({
+      where: {
+        id: parseInt(id),
+      },
+    });
+  }
 }

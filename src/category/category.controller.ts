@@ -30,4 +30,9 @@ export class CategoryController {
   update(@Param('id') id: string, @Body() updateMenuDto: UpdateCategoryDto) {
     return this.categoryService.update(id, updateMenuDto);
   }
+
+  @Delete('/:id')
+  delete(@Param('id') id: string) {
+    return this.categoryService.delete(id);
+  }
 }

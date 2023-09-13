@@ -109,4 +109,74 @@ export class ProductService {
       },
     });
   }
+
+  async update(id: string, updateMenuDto: UpdateProductDto) {
+    const alredyRegsitered = await this.getProduct({
+      id: parseInt(id),
+    });
+    if (!alredyRegsitered) {
+      throw new ConflictException(`Product '${updateMenuDto.name}' not found`);
+    }
+
+    const categoryIds = (
+      await Promise.all(
+        updateMenuDto.categories.map(async (category, index) => {
+          if (typeof category === 'number') {
+            const isRegistered = await this.getCategory({ id: category });
+            if (!isRegistered) {
+              throw new NotFoundException(
+                `Category '${category}' was not found!`,
+              );
+            }
+            return category;
+          } else {
+            throw new BadRequestException(
+              `Category at ${index} has invalid format!`,
+            );
+          }
+        }),
+      )
+    ).filter((item) => item);
+
+    const menuIds = (
+      await Promise.all(
+        updateMenuDto.menus.map(async (menu, index) => {
+          if (typeof menu === 'number') {
+            const isRegistered = await this.getMenu({ id: menu });
+            if (!isRegistered) {
+              throw new NotFoundException(`Menu '${menu}' was not found!`);
+            }
+            return menu;
+          } else {
+            throw new BadRequestException(
+              `Menu at ${index} has invalid format!`,
+            );
+          }
+        }),
+      )
+    ).filter((item) => item);
+
+    return await this.prisma.product.update({
+      where: {
+        id: parseInt(id),
+      },
+      data: {
+        ...updateMenuDto,
+        categories: {
+          connect: categoryIds.map((id) => ({
+            id,
+          })),
+        },
+        menus: {
+          connect: menuIds.map((id) => ({
+            id,
+          })),
+        },
+      },
+      include: {
+        categories: true,
+        menus: true,
+      },
+    });
+  }
 }

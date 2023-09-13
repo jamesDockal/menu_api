@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  Put,
 } from '@nestjs/common';
 import { ProductService } from './product.service';
 import { CreateProductDto } from './dto/create-product.dto';
@@ -23,5 +24,10 @@ export class ProductController {
   @Get()
   getAll() {
     return this.productService.getAll();
+  }
+
+  @Put('/:id')
+  update(@Param('id') id: string, @Body() updateMenuDto: UpdateProductDto) {
+    return this.productService.update(id, updateMenuDto);
   }
 }

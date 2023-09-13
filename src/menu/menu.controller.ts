@@ -35,4 +35,9 @@ export class MenuController {
   delete(@Param('id') id: string) {
     return this.menuService.delete(id);
   }
+
+  @Get('/:id')
+  findOne(@Param('id') id: string) {
+    return this.menuService.findOne(parseInt(id));
+  }
 }

@@ -12,7 +12,18 @@ import { Menu } from './entities/menu.entity';
 export class MenuService {
   constructor(private prisma: PrismaService) {}
 
-  async getMenu(dto: Partial<Menu>) {
+  async findOne(id: number) {
+    const menu = await this.prisma.menu.findFirst({
+      where: { id },
+    });
+    if (!menu) {
+      throw new NotFoundException(`Menu '${id}' was not found!`);
+    }
+
+    return menu;
+  }
+
+  private async getMenu(dto: Partial<Menu>) {
     return await this.prisma.menu.findFirst({
       where: dto,
     });
@@ -36,8 +47,9 @@ export class MenuService {
   async update(id: string, updateMenuDto: UpdateMenuDto) {
     const isRegistered = await this.getMenu({ id: parseInt(id) });
     if (!isRegistered) {
-      throw new NotFoundException(`Menu ${id} was not found!`);
+      throw new NotFoundException(`Menu '${id}' was not found!`);
     }
+
     return await this.prisma.menu.update({
       where: {
         id: parseInt(id),
@@ -49,7 +61,7 @@ export class MenuService {
   async delete(id: string) {
     const isRegistered = await this.getMenu({ id: parseInt(id) });
     if (!isRegistered) {
-      throw new NotFoundException(`Menu ${id} was not found!`);
+      throw new NotFoundException(`Menu '${id}' was not found!`);
     }
 
     return await this.prisma.menu.delete({

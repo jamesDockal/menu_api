@@ -27,12 +27,20 @@ export class CategoryController {
   }
 
   @Put('/:id')
-  update(@Param('id') id: string, @Body() updateMenuDto: UpdateCategoryDto) {
-    return this.categoryService.update(id, updateMenuDto);
+  update(
+    @Param('id') id: string,
+    @Body() updateCategoryDto: UpdateCategoryDto,
+  ) {
+    return this.categoryService.update(id, updateCategoryDto);
   }
 
   @Delete('/:id')
   delete(@Param('id') id: string) {
     return this.categoryService.delete(id);
+  }
+
+  @Get('/:id')
+  findOne(@Param('id') id: string) {
+    return this.categoryService.findOne(parseInt(id));
   }
 }

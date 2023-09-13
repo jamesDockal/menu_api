@@ -21,8 +21,7 @@ model Product {
   name        String
   image       String
   description String
-  category    Category? @relation(fields: [categoryId], references: [id])
-  categoryId Int?
+  categories Category[]
 }
 
 model Category {

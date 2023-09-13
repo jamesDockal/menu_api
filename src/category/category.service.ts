@@ -60,4 +60,15 @@ export class CategoryService {
       },
     });
   }
+
+  async findOne(id: number) {
+    const category = await this.prisma.category.findFirst({
+      where: { id },
+    });
+    if (!category) {
+      throw new NotFoundException(`Category '${id}' was not found!`);
+    }
+
+    return category;
+  }
 }

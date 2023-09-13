@@ -30,7 +30,7 @@ export class MenuService {
   }
 
   async create(createMenuDto: CreateMenuDto) {
-    const alredyRegsitered = this.getMenu({ name: createMenuDto.name });
+    const alredyRegsitered = await this.getMenu({ name: createMenuDto.name });
     if (alredyRegsitered) {
       throw new ConflictException('Menu alredy registered!');
     }
